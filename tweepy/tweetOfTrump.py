@@ -1,12 +1,10 @@
-# get tweets of any user and other descriptions and save in a csv file
-
 import tweepy
 import csv
 
-access_token = "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
-access_token_secret = "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
-consumer_key = "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
-consumer_secret = "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+access_token = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+access_token_secret = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+consumer_key = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+consumer_secret = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
 
 auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
 auth.set_access_token(access_token, access_token_secret)
@@ -15,17 +13,20 @@ api = tweepy.API(auth)
 
 tweets = []
 
-user = "@realdonaldtrump"     #user whose tweets you want to fetch
+user = "realdonaldtrump"  #username whose tweets are needed
 
-new_tweets = api.user_timeline(screen_name = user,count=200)
+new_tweets = api.user_timeline(screen_name = user,since='2016-01-01 00:00:00',until='2016-11-01 00:00:00',count=200)
 tweets.extend(new_tweets)
 last_tweet =tweets[-1].id - 1
 
+
 while len(new_tweets) > 0:
-    print ("getting tweets before %s" % (last_tweet))
-    new_tweets = api.user_timeline(screen_name=user, count=200, max_id=last_tweet)
+    print ("getting tweets before %s" % (tweets[-1].created_at))
+    new_tweets = api.user_timeline(screen_name=user, since='2016-01-01 00:00:00',until='2016-11-01 00:00:00',count=200, max_id=last_tweet,
+                                   wait_on_rate_limit=True)
+
     tweets.extend(new_tweets)
-    last_tweet = tweets[-1].id - 1
+    last_tweet = new_tweets[-1].id - 1
 
 
 outTweets = [[tweet.user.name,tweet.user.screen_name,tweet.user.statuses_count,tweet.user.friends_count,
@@ -35,7 +36,8 @@ outTweets = [[tweet.user.name,tweet.user.screen_name,tweet.user.statuses_count,t
               tweet.in_reply_to_user_id] for tweet in tweets]
 
 # write the csv
-with open('%s.csv'%user, 'w') as file:
+
+with open('csv/realdonaldtrump.csv', 'w',newline='') as file:
     writer = csv.writer(file)
     writer.writerow(['Name','Twitter Handle','Total Tweets','Total followings','Total Followers','User Id',
                      'User Verified','User Location','User Description','Date of tweet','Tweet id','Tweet Text',
