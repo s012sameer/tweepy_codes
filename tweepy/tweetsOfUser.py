@@ -2,10 +2,10 @@
 import tweepy
 import csv
 
-access_token = "442755126-QUgyMQjAPllOBGqqy3hTgbeebs6PxJYBI6S2kKUf"
-access_token_secret = "sAAgCvku936UnBOkJkISBzZ6qoz7u7DLhm3TdqL7HKBQs"
-consumer_key = "6sgX2e6bRdzgK0sSS0jZc1Jgc"
-consumer_secret = "qPopztsGzJAxqaqOXWYZ2r3TJOicYilFqFTnB6gXYBmiD1vXCR"
+access_token = ""
+access_token_secret = ""
+consumer_key = ""
+consumer_secret = ""
 
 def tweets_by_user():
     auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
